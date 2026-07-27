@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="ShieldSOC Security Operations Center Dashboard"
+    >
+
+    <title>ShieldSOC Dashboard</title>
+
+    <link
+        rel="stylesheet"
+        href="/static/style.css"
+    >
+</head>
+
+<body>
+
+    <div class="app-shell">
+
+        <aside class="sidebar">
+
+            <div class="brand">
+
+                <div class="brand-logo">
+                    <span>S</span>
+                </div>
+
+                <div class="brand-text">
+                    <h1>ShieldSOC</h1>
+                    <p>Security Operations Center</p>
+                </div>
+
+            </div>
+
+            <nav class="sidebar-nav">
+
+                <a
+                    href="#overview"
+                    class="nav-link active"
+                >
+                    <span class="nav-icon">◫</span>
+                    <span>SOC Overview</span>
+                </a>
+
+                <a
+                    href="#alerts"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">!</span>
+                    <span>Security Alerts</span>
+                </a>
+
+                <a
+                    href="#logs"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">≡</span>
+                    <span>Live Logs</span>
+                </a>
+
+                <a
+                    href="#threats"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">⌁</span>
+                    <span>Threat Detection</span>
+                </a>
+
+                <a
+                    href="#incidents"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">◎</span>
+                    <span>Incidents</span>
+                </a>
+
+                <a
+                    href="#reports"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">▤</span>
+                    <span>Reports</span>
+                </a>
+<a
+    href="#users"
+    class="nav-link admin-only"
+    id="usersNavLink"
+>
+    <span class="nav-icon">👥</span>
+    <span>User Management</span>
+</a>
+            </nav>
+
+            <div class="sidebar-bottom">
+
+                <div class="system-status-card">
+
+                    <div class="system-status-top">
+                        <span class="status-indicator"></span>
+                        <strong>System Online</strong>
+                    </div>
+
+                    <p>
+                        All monitoring services are active.
+                    </p>
+
+                </div>
+
+                <a
+                    href="#settings"
+                    id="settingsButton"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">⚙</span>
+                    <span>Settings</span>
+                </a>
+                <div id="settingsModal" class="modal" hidden>
+    <div class="modal-content settings-modal-content">
+        <h3>Settings</h3>
+
+        <label class="setting-row">
+            <span>Auto Refresh</span>
+            <input type="checkbox" id="autoRefreshToggle" checked>
+        </label>
+
+        <label class="setting-row">
+            <span>Refresh Interval</span>
+            <select id="refreshInterval">
+                <option value="10000">10 Seconds</option>
+                <option value="30000">30 Seconds</option>
+                <option value="60000">1 Minute</option>
+            </select>
+        </label>
+
+        <div class="modal-actions">
+            <button type="button" id="saveSettingsButton" class="secondary-button">
+                Save
+            </button>
+
+            <button type="button" id="closeSettingsButton" class="secondary-button">
+                Cancel
+            </button>
+        </div>
+    </div>
+</div>
+
+                <a
+                    href="#support"
+                    id="supportButton"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">?</span>
+                    <span>Support</span>
+                </a>
+                <div id="supportModal" class="modal" hidden>
+    <div class="modal-content settings-modal-content">
+
+        <h3>Support Center</h3>
+
+        <p>If you need assistance, contact the SOC team.</p>
+
+        <div class="setting-row">
+            <span>Email</span>
+            <strong>support@shieldsoc.local</strong>
+        </div>
+
+        <div class="setting-row">
+            <span>Phone</span>
+            <strong>+966 11 555 1234</strong>
+        </div>
+
+        <div class="setting-row">
+            <span>Availability</span>
+            <strong>24/7</strong>
+        </div>
+
+        <div class="modal-actions">
+            <button id="ticketButton" class="secondary-button">
+                Open Ticket
+            </button>
+
+            <button id="closeSupportButton" class="secondary-button">
+                Close
+            </button>
+        </div>
+
+    </div>
+</div>
+
+            </div>
+
+        </aside>
+
+        <main class="main-content">
+
+            <header class="topbar">
+
+                <div class="page-title">
+
+                    <p class="eyebrow">
+                        Security Operations Center
+                    </p>
+
+                    <h2>
+                        Security Operations Overview
+                    </h2>
+
+                    <p class="page-subtitle">
+                        Monitor security events, threats, incidents,
+                        and system activity in real time.
+                    </p>
+
+                </div>
+
+                <div class="topbar-actions">
+
+                    <div class="live-status">
+
+                        <span class="live-dot"></span>
+
+                        <div>
+                            <strong>Live Monitoring</strong>
+                            <small>Updated just now</small>
+                        </div>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        id="notificationsButton"
+                        class="icon-button"
+                        aria-label="Notifications"
+                    >
+                        🔔
+                    </button>
+                    <div id="notificationPopup" class="notification-popup" style="display:none;">
+    <h4>Notifications</h4>
+
+    <div class="notification-item">
+        🔴 Critical: Multiple Failed Login Attempts
+    </div>
+
+    <div class="notification-item">
+        🟡 Warning: Suspicious IP Detected
+    </div>
+
+    <div class="notification-item">
+        🟢 System Backup Completed Successfully
+    </div>
+</div>
+
+                    <div class="user-menu">
+    <div class="user-avatar" id="userInitials">SA</div>
+
+    <div class="user-info">
+        <strong id="currentUserName">SOC Analyst</strong>
+        <span id="currentUserRole">Security Team</span>
+    </div>
+
+    <button
+        id="logoutButton"
+        class="logout-button"
+        type="button"
+        title="Sign out"
+    >
+        Logout
+    </button>
+</div>
+
+                </div>
+
+            </header>
+
+            <section
+                id="overview"
+                class="metrics-grid"
+            >
+
+                <article class="metric-card">
+
+                    <div class="metric-card-top">
+
+                        <span class="metric-label">
+                            Total Logs
+                        </span>
+
+                        <span class="metric-icon cyan">
+                            ≡
+                        </span>
+
+                    </div>
+
+                    <div class="metric-value" id="totalLogs">
+                        24,680
+                    </div>
+
+                    <div class="metric-footer positive">
+                        <span>↑ 12%</span>
+                        <small>from today</small>
+                    </div>
+
+                </article>
+
+                <article class="metric-card critical-card">
+
+                    <div class="metric-card-top">
+
+                        <span class="metric-label">
+                            Critical Alerts
+                        </span>
+
+                        <span class="metric-icon red">
+                            !
+                        </span>
+
+                    </div>
+
+                    <div class="metric-value" id="criticalAlerts">
+                        14
+                    </div>
+
+                    <div class="metric-footer danger">
+                        <span>Immediate action</span>
+                        <small>required</small>
+                    </div>
+
+                </article>
+
+                <article class="metric-card">
+
+                    <div class="metric-card-top">
+
+                        <span class="metric-label">
+                            Blocked IPs
+                        </span>
+
+                        <span class="metric-icon green">
+                            ⛨
+                        </span>
+
+                    </div>
+
+                    <div class="metric-value" id="blockedIps">
+                        86
+                    </div>
+
+                    <div class="metric-footer positive">
+                        <span>18 blocked</span>
+                        <small>today</small>
+                    </div>
+
+                </article>
+
+                <article class="metric-card">
+
+                    <div class="metric-card-top">
+
+                        <span class="metric-label">
+                            Active Incidents
+                        </span>
+
+                        <span class="metric-icon orange">
+                            ◎
+                        </span>
+
+                    </div>
+
+                    <div class="metric-value" id="activeIncidents">
+                        7
+                    </div>
+
+                    <div class="metric-footer warning">
+                        <span>3 incidents</span>
+                        <small>under investigation</small>
+                    </div>
+
+                </article>
+
+            </section>
+
+            <section id="alerts" class="content-grid primary-grid">
+
+                <article
+                    class="dashboard-panel alerts-panel"
+                >
+
+                    <div class="panel-header">
+
+                        <div>
+                            <p class="panel-eyebrow">
+                                Detection Center
+                            </p>
+
+                            <h3>
+                                Recent Security Alerts
+                            </h3>
+
+                            <p>
+                                Latest suspicious activities detected
+                                across monitored systems.
+                            </p>
+                        </div>
+                        <div class="panel-header">
+
+    <div>
+        <p class="panel-eyebrow">Detection Center</p>
+
+        <h3>Recent Security Alerts</h3>
+
+        <p>
+            Latest suspicious activities detected across monitored systems.
+        </p>
+    </div>
+
+    <div class="panel-actions">
+
+        <span id="lastUpdatedText">
+            Last updated: Just now
+        </span>
+
+        <button
+            type="button"
+            id="refreshDashboardButton"
+            class="secondary-button"
+        >
+            ↻ Refresh
+        </button>
+
+        <button
+            type="button"
+            id="viewAllAlerts"
+            class="secondary-button"
+        >
+            View All
+        </button>
+
+    </div>
+
+</div>
+
+                    </div>
+
+<div class="alerts-table" id="alertsTableBody">
+    <div class="user-loading">
+        Loading alerts...
+    </div>
+</div>
+                </article>
+
+                <article
+                    id="threats"
+                    class="dashboard-panel severity-panel"
+                >
+
+                    <div class="panel-header">
+
+                        <div>
+                            <p class="panel-eyebrow">
+                                Threat Analysis
+                            </p>
+
+                            <h3>
+                                Threat Severity
+                            </h3>
+
+                            <p>
+                                Current alert distribution by severity.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="severity-list">
+
+                        <div class="severity-item">
+
+                            <div class="severity-item-top">
+                                <span>Critical</span>
+                                <strong>14</strong>
+                            </div>
+
+                            <div class="progress-track">
+                                <div
+                                    class="progress-bar critical-bar"
+                                    style="width: 78%"
+                                ></div>
+                            </div>
+
+                        </div>
+
+                        <div class="severity-item">
+
+                            <div class="severity-item-top">
+                                <span>High</span>
+                                <strong>31</strong>
+                            </div>
+
+                            <div class="progress-track">
+                                <div
+                                    class="progress-bar high-bar"
+                                    style="width: 64%"
+                                ></div>
+                            </div>
+
+                        </div>
+
+                        <div class="severity-item">
+
+                            <div class="severity-item-top">
+                                <span>Medium</span>
+                                <strong>58</strong>
+                            </div>
+
+                            <div class="progress-track">
+                                <div
+                                    class="progress-bar medium-bar"
+                                    style="width: 50%"
+                                ></div>
+                            </div>
+
+                        </div>
+
+                        <div class="severity-item">
+
+                            <div class="severity-item-top">
+                                <span>Low</span>
+                                <strong>103</strong>
+                            </div>
+
+                            <div class="progress-track">
+                                <div
+                                    class="progress-bar low-bar"
+                                    style="width: 36%"
+                                ></div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="threat-summary">
+
+                        <div>
+                            <span>Total Alerts</span>
+                            <strong>206</strong>
+                        </div>
+
+                        <div>
+                            <span>Resolved</span>
+                            <strong>148</strong>
+                        </div>
+
+                        <div>
+                            <span>Escalated</span>
+                            <strong>12</strong>
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </section>
+
+            <section id="alerts" class="content-grid secondary-grid">
+
+                <article class="dashboard-panel activity-panel">
+
+                    <div class="panel-header">
+
+                        <div>
+                            <p class="panel-eyebrow">
+                                Live Telemetry
+                            </p>
+
+                            <h3>
+                                Security Activity
+                            </h3>
+
+                            <p>
+                                Detected events during the last 12 hours.
+                            </p>
+                        </div>
+
+                        <div class="panel-actions">
+
+                            <select
+                                id="activityRange"
+                                aria-label="Activity range"
+                            >
+                                <option value="12h">
+                                    Last 12 Hours
+                                </option>
+
+                                <option value="24h">
+                                    Last 24 Hours
+                                </option>
+
+                                <option value="7d">
+                                    Last 7 Days
+                                </option>
+                            </select>
+
+                            <span class="live-badge">
+                                Live
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="activity-chart">
+
+                        <div class="chart-grid-lines">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+
+                        <div class="chart-bars">
+
+                            <span style="height: 38%"></span>
+                            <span style="height: 52%"></span>
+                            <span style="height: 44%"></span>
+                            <span style="height: 68%"></span>
+                            <span style="height: 59%"></span>
+                            <span style="height: 82%"></span>
+                            <span style="height: 73%"></span>
+                            <span style="height: 92%"></span>
+                            <span style="height: 67%"></span>
+                            <span style="height: 58%"></span>
+                            <span style="height: 76%"></span>
+                            <span style="height: 49%"></span>
+
+                        </div>
+
+                        <div class="chart-labels">
+                            <span>08:00</span>
+                            <span>10:00</span>
+                            <span>12:00</span>
+                            <span>14:00</span>
+                            <span>16:00</span>
+                            <span>18:00</span>
+                        </div>
+
+                    </div>
+
+                </article>
+
+                <article class="dashboard-panel ip-panel">
+
+                    <div class="panel-header">
+
+                        <div>
+                            <p class="panel-eyebrow">
+                                Threat Sources
+                            </p>
+
+                            <h3>
+                                Top Suspicious IPs
+                            </h3>
+
+                            <p>
+                                Most active external threat sources.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="ip-list">
+
+                        <div class="ip-row">
+
+                            <div class="ip-main">
+                                <span class="country-code">DE</span>
+
+                                <div>
+                                    <strong>
+                                        185.220.101.4
+                                    </strong>
+
+                                    <p>Germany</p>
+                                </div>
+                            </div>
+
+                            <span class="event-count">
+                                48 Events
+                            </span>
+
+                        </div>
+
+                        <div class="ip-row">
+
+                            <div class="ip-main">
+                                <span class="country-code">RU</span>
+
+                                <div>
+                                    <strong>
+                                        91.214.124.17
+                                    </strong>
+
+                                    <p>Russia</p>
+                                </div>
+                            </div>
+
+                            <span class="event-count">
+                                33 Events
+                            </span>
+
+                        </div>
+
+                        <div class="ip-row">
+
+                            <div class="ip-main">
+                                <span class="country-code">SG</span>
+
+                                <div>
+                                    <strong>
+                                        103.27.186.12
+                                    </strong>
+
+                                    <p>Singapore</p>
+                                </div>
+                            </div>
+
+                            <span class="event-count">
+                                29 Events
+                            </span>
+
+                        </div>
+
+                        <div class="ip-row">
+
+                            <div class="ip-main">
+                                <span class="country-code">US</span>
+
+                                <div>
+                                    <strong>
+                                        45.33.32.156
+                                    </strong>
+
+                                    <p>United States</p>
+                                </div>
+                            </div>
+
+                            <span class="event-count">
+                                21 Events
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </section>
+
+            <section class="content-grid tertiary-grid">
+
+                <article
+                    id="logs"
+                    class="dashboard-panel logs-panel"
+                >
+
+                    <div class="panel-header">
+
+                        <div>
+                            <p class="panel-eyebrow">
+                                Event Stream
+                            </p>
+
+                            <h3>
+                                Live Security Logs
+                            </h3>
+
+                            <p>
+                                Real-time activity collected from
+                                monitored endpoints.
+                            </p>
+                        </div>
+
+                        <button
+                            type="button"
+                            class="secondary-button"
+                            id="exportLogsButton"
+                        >
+                            Export Logs
+                        </button>
+
+                    </div>
+
+                    <div class="logs-filters">
+
+    <input
+        type="text"
+        id="logsSearchInput"
+        placeholder="Search logs..."
+    >
+
+    <select id="logsStatusFilter">
+        <option value="">All Status</option>
+        <option value="Alert">Alert</option>
+        <option value="Blocked">Blocked</option>
+        <option value="Review">Review</option>
+        <option value="Normal">Normal</option>
+    </select>
+
+</div>
+                    <div class="logs-table">
+
+                        <div class="log-row log-header">
+                            <span>Time</span>
+                            <span>Source</span>
+                            <span>Event</span>
+                            <span>Status</span>
+                        </div>
+
+                        <div class="log-row">
+                            <span>19:42:18</span>
+                            <span>WEB-SERVER-01</span>
+                            <span>Failed authentication attempt</span>
+                            <span class="log-status danger">
+                                Alert
+                            </span>
+                        </div>
+
+                        <div class="log-row">
+                            <span>19:41:54</span>
+                            <span>FIREWALL-01</span>
+                            <span>Inbound connection blocked</span>
+                            <span class="log-status safe">
+                                Blocked
+                            </span>
+                        </div>
+
+                        <div class="log-row">
+                            <span>19:40:12</span>
+                            <span>HR-PC-08</span>
+                            <span>New USB device detected</span>
+                            <span class="log-status warning">
+                                Review
+                            </span>
+                        </div>
+
+                        <div class="log-row">
+                            <span>19:38:47</span>
+                            <span>DB-SERVER-02</span>
+                            <span>Database backup completed</span>
+                            <span class="log-status safe">
+                                Normal
+                            </span>
+                        </div>
+
+                    </div>
+
+                </article>
+
+                <article
+                    id="incidents"
+                    class="dashboard-panel incidents-panel"
+                >
+
+                    <div class="panel-header">
+
+                        <div>
+                            <p class="panel-eyebrow">
+                                Incident Response
+                            </p>
+
+                            <h3>
+                                Incident Status
+                            </h3>
+
+                            <p>
+                                Current security incident workflow.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="incident-list">
+
+                        <div class="incident-item">
+
+                            <div>
+                                <span class="incident-number">
+                                    INC-1042
+                                </span>
+
+                                <strong>
+                                    Brute-force attack
+                                </strong>
+
+                                <p>
+                                    Assigned to Tier 2 Analyst
+                                </p>
+                            </div>
+
+                            <span class="incident-status investigating">
+                                Investigating
+                            </span>
+
+                        </div>
+
+                        <div class="incident-item">
+
+                            <div>
+                                <span class="incident-number">
+                                    INC-1039
+                                </span>
+
+                                <strong>
+                                    Malware execution
+                                </strong>
+
+                                <p>
+                                    Endpoint isolated
+                                </p>
+                            </div>
+
+                            <span class="incident-status contained">
+                                Contained
+                            </span>
+
+                        </div>
+
+                        <div class="incident-item">
+
+                            <div>
+                                <span class="incident-number">
+                                    INC-1035
+                                </span>
+
+                                <strong>
+                                    Suspicious data transfer
+                                </strong>
+
+                                <p>
+                                    Evidence collection in progress
+                                </p>
+                            </div>
+
+                            <span class="incident-status open">
+                                Open
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </section>
+<section
+    id="users"
+    class="dashboard-panel users-panel"
+    hidden
+>
+    <div class="panel-header">
+
+        <div>
+            <p class="panel-eyebrow">
+                Administration
+            </p>
+
+            <h3>
+                User Management
+            </h3>
+
+            <p>
+                Manage ShieldSOC users, roles, and account status.
+            </p>
+        </div>
+
+        <button
+            type="button"
+            class="secondary-button"
+            id="addUserButton"
+        >
+            Add User
+        </button>
+
+    </div>
+<div class="users-toolbar">
+    <input
+        id="usersSearchInput"
+        type="search"
+        placeholder="Search by name or username..."
+        autocomplete="off"
+    >
+</div>
+    <div class="users-table">
+
+        <div class="user-row user-header">
+            <span>Name</span>
+            <span>Username</span>
+            <span>Role</span>
+            <span>Status</span>
+            <span>Created</span>
+            <span>Actions</span>
+        </div>
+
+        <div id="usersTableBody"></div>
+
+    </div>
+</section>
+<div id="addUserModal" class="modal" hidden>
+    <div class="modal-content">
+
+        <h3>Add User</h3>
+
+        <label for="newFullName">Full Name</label>
+        <input
+            id="newFullName"
+            type="text"
+            placeholder="Full Name"
+        >
+
+        <label for="newUsername">Username</label>
+        <input
+            id="newUsername"
+            type="text"
+            placeholder="Username"
+        >
+
+        <label for="newPassword">Password</label>
+        <input
+            id="newPassword"
+            type="password"
+            placeholder="Password"
+        >
+
+        <label for="newRole">Role</label>
+        <select id="newRole">
+            <option value="Viewer">Viewer</option>
+            <option value="Analyst">Analyst</option>
+            <option value="Administrator">
+                Administrator
+            </option>
+        </select>
+
+        <div class="modal-actions">
+            <button
+                id="saveUserButton"
+                class="primary-button"
+                type="button"
+            >
+                Save User
+            </button>
+
+            <button
+                id="closeModalButton"
+                class="secondary-button"
+                type="button"
+            >
+                Cancel
+            </button>
+        </div>
+
+    </div>
+</div>
+            <footer class="dashboard-footer">
+
+                <p>
+                    ShieldSOC Security Operations Center Dashboard
+                </p>
+
+                <span>
+                    Local Development Environment
+                </span>
+
+            </footer>
+
+        </main>
+
+    </div>
+<div id="editUserModal" class="modal" hidden>
+    <div class="modal-content settings-modal-content">
+
+        <h3>Edit User</h3>
+
+        <form id="editUserForm">
+
+            <input
+                id="editUserId"
+                type="hidden"
+            >
+
+            <label for="editFullName">
+                Full Name
+            </label>
+
+            <input
+                id="editFullName"
+                type="text"
+                placeholder="Enter full name"
+                required
+            >
+
+            <label for="editUsername">
+                Username
+            </label>
+
+            <input
+                id="editUsername"
+                type="text"
+                placeholder="Enter username"
+                required
+            >
+
+            <label for="editRole">
+                Role
+            </label>
+
+            <select id="editRole" required>
+                <option value="Viewer">Viewer</option>
+                <option value="Analyst">Analyst</option>
+                <option value="Administrator">
+                    Administrator
+                </option>
+            </select>
+
+            <label class="setting-row">
+                <span>Active Account</span>
+
+                <input
+                    id="editIsActive"
+                    type="checkbox"
+                >
+            </label>
+
+            <div
+                id="editUserMessage"
+                class="login-message"
+                role="alert"
+                hidden
+            ></div>
+
+            <div class="modal-actions">
+
+                <button
+                    id="saveEditUserButton"
+                    class="secondary-button"
+                    type="submit"
+                >
+                    Save Changes
+                </button>
+
+                <button
+                    id="closeEditUserButton"
+                    class="secondary-button"
+                    type="button"
+                >
+                    Cancel
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+</div>
+<div id="logDetailsModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Security Log Details</h2>
+            <button id="closeLogDetails">&times;</button>
+        </div>
+
+        <div class="modal-body">
+
+            <div class="detail-row">
+                <strong>Time:</strong>
+                <span id="detailTime"></span>
+            </div>
+
+            <div class="detail-row">
+                <strong>Source:</strong>
+                <span id="detailSource"></span>
+            </div>
+
+            <div class="detail-row">
+                <strong>Event:</strong>
+                <span id="detailEvent"></span>
+            </div>
+
+            <div class="detail-row">
+                <strong>Status:</strong>
+                <span id="detailStatus"></span>
+            </div>
+
+            <div class="detail-row">
+                <strong>Recommended Action:</strong>
+                <span id="detailRecommendation">
+                    Investigate immediately and verify affected endpoint.
+                </span>
+            </div>
+<div class="detail-row">
+    <strong>MITRE ATT&CK:</strong>
+    <span id="detailMitreTechnique">
+        T1078 - Valid Accounts
+    </span>
+</div>
+
+<div class="detail-row">
+    <strong>Assigned Analyst:</strong>
+    <span id="detailAssignedAnalyst">
+        Unassigned
+    </span>
+</div>
+
+<div class="alert-action-buttons">
+    <button
+        type="button"
+        id="assignAlertButton"
+        class="secondary-button">
+         Assign to Analyst
+    </button>
+
+    <button
+        type="button"
+        id="resolveAlertButton"
+        class="secondary-button">
+        ✓ Mark as Resolved
+    </button>
+</div>
+        </div>
+    </div>
+</div>
+
+<div id="toast" class="toast"></div>
+    <script src="/static/script.js"></script>
+
+</body>
+</html>

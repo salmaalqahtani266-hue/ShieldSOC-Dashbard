@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShieldSOC Login</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body class="login-page">
+
+    <main class="login-container">
+
+        <section class="login-visual">
+            <div class="login-brand">
+                <div class="brand-logo">
+                    <span>S</span>
+                </div>
+
+                <div>
+                    <h1>ShieldSOC</h1>
+                    <p>Critical Infrastructure SOC Platform</p>
+                </div>
+            </div>
+
+            <div class="login-intro">
+                <p class="eyebrow">Secure Access</p>
+
+                <h2>
+                    Monitor and protect critical infrastructure.
+                </h2>
+
+                <p>
+                    Access the Security Operations Center to review
+                    alerts, incidents, logs, assets, and threat activity.
+                </p>
+            </div>
+
+            <div class="login-features">
+                <div>
+                    <span>01</span>
+                    <p>Real-time security monitoring</p>
+                </div>
+
+                <div>
+                    <span>02</span>
+                    <p>Incident response and investigation</p>
+                </div>
+
+                <div>
+                    <span>03</span>
+                    <p>Role-based access control</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="login-panel">
+
+            <div class="login-card">
+
+                <div class="login-card-header">
+                    <p class="panel-eyebrow">
+                        Analyst Authentication
+                    </p>
+
+                    <h2>Sign in to ShieldSOC</h2>
+
+                    <p>
+                        Enter your authorized account credentials.
+                    </p>
+                </div>
+
+                <div
+                    id="loginMessage"
+                    class="login-message"
+                    role="alert"
+                    hidden
+                ></div>
+
+                <form id="loginForm" autocomplete="off">
+
+                    <label for="username">
+                        Username
+                    </label>
+
+                    <input
+                        id="username"
+                        name="username"
+                        type="text"
+                        placeholder="Enter username"
+                        autocomplete="username"
+                        required
+                    >
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="password-field">
+                        <input
+                            id="password"
+                            name="password"
+                            type="password"
+                            placeholder="Enter password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            id="togglePassword"
+                            type="button"
+                            aria-label="Show password"
+                        >
+                            Show
+                        </button>
+                    </div>
+<button
+    id="forgotPasswordButton"
+    class="forgot-password-button"
+    type="button"
+>
+    Forgot password?
+</button>
+                    <button
+                        id="loginButton"
+                        class="login-button"
+                        type="submit"
+                    >
+                        Sign In
+                    </button>
+
+                </form>
+
+                <div class="login-security-note">
+                    <span class="status-indicator"></span>
+
+                    <p>
+                        Protected authentication with hashed passwords
+                        and secure sessions.
+                    </p>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+<div id="forgotPasswordModal" class="forgot-modal" hidden>
+    <div class="forgot-modal-content">
+
+        <div class="forgot-modal-header">
+            <div>
+                <p class="panel-eyebrow">Account Recovery</p>
+                <h2>Reset your password</h2>
+            </div>
+
+            <button
+                id="closeForgotModal"
+                type="button"
+                class="forgot-close-button"
+                aria-label="Close"
+            >
+                ×
+            </button>
+        </div>
+
+        <p class="forgot-description">
+            Enter your username. If the account exists, reset
+            instructions will be generated.
+        </p>
+
+        <div
+            id="forgotPasswordMessage"
+            class="login-message"
+            role="alert"
+            hidden
+        ></div>
+
+        <form id="forgotPasswordForm">
+
+            <label for="recoveryUsername">
+                Username
+            </label>
+
+            <input
+                id="recoveryUsername"
+                name="username"
+                type="text"
+                placeholder="Enter your username"
+                autocomplete="username"
+                required
+            >
+
+            <button
+                id="sendResetButton"
+                class="login-button"
+                type="submit"
+            >
+                Send Reset Instructions
+            </button>
+
+        </form>
+
+        <p class="demo-mode-note">
+            Demo Version: Password reset emails are disabled in this portfolio. Contact the administrator for assistance.
+        </p>
+
+    </div>
+</div>
+    <script src="/static/login.js"></script>
+
+</body>
+</html>
